@@ -8,19 +8,20 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import android.R;
-import learn2crack.chat.R;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.R;
 
 public class ChatActivity extends Activity {
     SharedPreferences prefs;
@@ -36,9 +38,18 @@ public class ChatActivity extends Activity {
     Button send_btn;
     Bundle bundle;
     TableLayout tab;
+    
+    ArrayList<String> arrlist = null;
+    ArrayList<String> arr_id_list = null;
+    
+    
+    SQLiteDatabase db;
+    String newQuery = "create table dialogue (id integer primary key , name text, msg text);";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    
         setContentView(R.layout.activity_chat);
         tab = (TableLayout)findViewById(R.id.tab);
 
@@ -48,10 +59,22 @@ public class ChatActivity extends Activity {
         edit.putString("CURRENT_ACTIVE", bundle.getString("mobno"));
         edit.commit();
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
+        
+        db =  openOrCreateDatabase("dbname", MODE_WORLD_WRITEABLE, null);
+        try{
+            db.execSQL(newQuery);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        //insertData("tests");
+        
+        arrlist = new ArrayList<String>();
+        arr_id_list = new ArrayList<String>();
+ 
+        selectData();
         
         /* 상대방이 한말 표시 */
-
         if(bundle.getString("name") != null){
             TableRow tr1 = new TableRow(getApplicationContext());
             tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -61,7 +84,6 @@ public class ChatActivity extends Activity {
             textview.setText(Html.fromHtml("<b>"+bundle.getString("name")+" : </b>"+bundle.getString("msg")));
             tr1.addView(textview);
             tab.addView(tr1);
-
         }
 
         //내가 한말 표시
@@ -78,15 +100,56 @@ public class ChatActivity extends Activity {
                 textview.setTextSize(20);
                 textview.setTextColor(Color.parseColor("#A901DB"));
                 textview.setText(Html.fromHtml("<b>You : </b>" + chat_msg.getText().toString()));
+                
+                //
+                insertData("You: ",chat_msg.getText().toString());
+                Log.d("test", "you: " + chat_msg.getText().toString());
+                
                 tr2.addView(textview);
                 tab.addView(tr2);
                 new Send().execute();
             }
         });
-
-
     }
 
+    
+    private void insertData(String name,String msg){
+    	 
+        db.beginTransaction();
+ 
+        try{
+            String sql = "insert into dialogue (name,msg) values ('"+ name +"','"+ msg +"');";
+            db.execSQL(sql);
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.endTransaction();
+        }
+ 
+    }
+    
+    public void selectData(){
+        String sql = "select * from dialogue";
+        
+        Cursor result = db.rawQuery(sql, null);
+        result.moveToFirst();
+        while(!result.isAfterLast()){
+        	
+        	TableRow tr1 = new TableRow(getApplicationContext());
+            tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            TextView textview = new TextView(getApplicationContext());
+            textview.setTextSize(20);
+            textview.setTextColor(Color.parseColor("#0B0719"));
+            textview.setText(Html.fromHtml("<b>"+result.getString(1)+" : </b>"+result.getString(2)));
+            tr1.addView(textview);
+            tab.addView(tr1);
+            
+            result.moveToNext();
+        }
+        result.close();
+    }
+    
     private BroadcastReceiver onNotice= new BroadcastReceiver() {
 
         @Override
@@ -102,6 +165,10 @@ public class ChatActivity extends Activity {
                 textview.setTextSize(20);
                 textview.setTextColor(Color.parseColor("#0B0719"));
                 textview.setText(Html.fromHtml("<b>"+str1+" : </b>"+str));
+                
+                insertData(str1, str);
+                Log.d("test", "2  name: " + str1 + " msg: " + str); 
+                
                 tr1.addView(textview);
                 tab.addView(tr1);
             }
