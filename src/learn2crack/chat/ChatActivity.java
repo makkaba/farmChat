@@ -34,15 +34,13 @@ public class ChatActivity extends Activity {
     EditText chat_msg;
     Button send_btn;
     Bundle bundle;
-    TableLayout tab;
-    
+   
+    public static final boolean FROMOTHER = true;
+    public static final boolean FROMMYSELF = false;
 
-	// Chat messages list adapter
-    /*
-	private MessagesListAdapter adapter;
-	private List<CustomMsg> listMessages;
-	private ListView lv;
-     */
+    public static final int INT_OTHER = 1;
+    public static final int INT_SELF = 0;
+    
     
     
 	// bubble code
@@ -50,23 +48,8 @@ public class ChatActivity extends Activity {
 	private ListView LV;
 	
 	
-	
-	
-	
-	
-	
-	
     SQLiteDatabase db;
-    String newQuery = "create table dialogue (id integer primary key , name text, msg text);";
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    String newQuery = "create table msgbox (id integer primary key , name text, msg text, isother integer);";
     
     
     
@@ -74,24 +57,13 @@ public class ChatActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        
-        /*
-        lv = (ListView) findViewById(R.id.list_view_messages);
-        
-        */
-        //tab = (TableLayout)findViewById(R.id.tab);
-        
+       
         
         //bubble code
         LV = (ListView) findViewById(R.id.list_view_messages);
         ADAPTER = new DiscussArrayAdapter(getApplicationContext(), R.layout.listitem_discuss);
 
 		LV.setAdapter(ADAPTER);
-        
-        
-        
-        
-        
         
         
 
@@ -102,17 +74,6 @@ public class ChatActivity extends Activity {
         edit.commit();
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
         
-        
-        
-        
-        //greenchat Code
-        /*
-        listMessages = new ArrayList<CustomMsg>();
-		adapter = new MessagesListAdapter(this, listMessages);
-		lv.setAdapter(adapter);
-         */
-		
-		
         db =  openOrCreateDatabase("dbname", MODE_WORLD_WRITEABLE, null);
         try{
             db.execSQL(newQuery);
@@ -128,25 +89,7 @@ public class ChatActivity extends Activity {
         /* 상대방이 한말 표시 */
         if(bundle.getString("name") != null){
         	
-        	
-        	/*
-            TableRow tr1 = new TableRow(getApplicationContext());
-            tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView textview = new TextView(getApplicationContext());
-            textview.setTextSize(20);
-            textview.setTextColor(Color.parseColor("#0B0719"));
-            textview.setText(Html.fromHtml("<b>"+bundle.getString("name")+" : </b>"+bundle.getString("msg")));
-            tr1.addView(textview);
-            tab.addView(tr1);
-            */
-     
-        	
-        	//green chat
-			//append message to list
-        	/*
-			CustomMsg m = new CustomMsg(bundle.getString("name"), bundle.getString("msg"), false);
-			appendMessage(m);
-        	 */
+        	ADAPTER.add(new OneComment(FROMOTHER, bundle.getString("msg")));
         }
 
         //내가 한말 표시
@@ -158,44 +101,23 @@ public class ChatActivity extends Activity {
             @Override
             public void onClick(View v) {
             	
-            	/*
-                TableRow tr2 = new TableRow(getApplicationContext());
-                tr2.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                TextView textview = new TextView(getApplicationContext());
-                textview.setTextSize(20);
-                textview.setTextColor(Color.parseColor("#A901DB"));
-                textview.setText(Html.fromHtml("<b>You : </b>" + chat_msg.getText().toString()));
-                tr2.addView(textview);
-                tab.addView(tr2);
-                */
-            	
-                insertData("You: ",chat_msg.getText().toString());
+                insertData("You",chat_msg.getText().toString(), INT_SELF);
                 Log.d("test", "you: " + chat_msg.getText().toString());
                 
-                
-                //green chat code
-                //append message to list
-                /*
-    			CustomMsg m = new CustomMsg("Me", chat_msg.getText().toString(), true);
-    			appendMessage(m);
-    			*/
-    			
-    			ADAPTER.add(new OneComment(true, chat_msg.getText().toString()));
+    			ADAPTER.add(new OneComment(FROMMYSELF, chat_msg.getText().toString()));
 				
-                
-                
                 new Send().execute();
             }
         });
     }
 
     
-    private void insertData(String name,String msg){
+    private void insertData(String name,String msg, int isother){
     	 
         db.beginTransaction();
  
         try{
-            String sql = "insert into dialogue (name,msg) values ('"+ name +"','"+ msg +"');";
+            String sql = "insert into msgbox (name,msg,isother) values ('"+ name +"','"+ msg +"','"+ isother +"');";
             db.execSQL(sql);
             db.setTransactionSuccessful();
         }catch(Exception e){
@@ -207,92 +129,47 @@ public class ChatActivity extends Activity {
     }
     
     public void selectData(){
-        String sql = "select * from dialogue";
+    	boolean selfOrNot = true;
+        String sql = "select * from msgbox";
         
         Cursor result = db.rawQuery(sql, null);
         result.moveToFirst();
         while(!result.isAfterLast()){
         	
-        	/*
-        	TableRow tr1 = new TableRow(getApplicationContext());
-            tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView textview = new TextView(getApplicationContext());
-            textview.setTextSize(20);
-            textview.setTextColor(Color.parseColor("#0B0719"));
-            textview.setText(Html.fromHtml("<b>"+result.getString(1)+" : </b>"+result.getString(2)));
-            tr1.addView(textview);
-            tab.addView(tr1);
-            */
+        	
+        	//table에 누가 보냈는지 값도 있어야 함....
+        	
+        	if( result.getInt(3) == 1)
+        	{selfOrNot = FROMOTHER;}
+        	
+        	else if(result.getInt(3) == 0)
+        	{selfOrNot = FROMMYSELF;}
         	
         	
-        	//green code
-        	//append message to list
-        	/*
-			CustomMsg m = new CustomMsg(result.getString(1), result.getString(2), false);
-			appendMessage(m);
-        	 */
-            
-            
+        	result.getString(3);
+        	ADAPTER.add(new OneComment(selfOrNot, result.getString(2)));
             
             result.moveToNext();
         }
         result.close();
     }
     
-    /**
-	 * Appending message to list view
-	 * */
     
-    /*
-	private void appendMessage(final CustomMsg m) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				listMessages.add(m);
-				
-				adapter.notifyDataSetChanged();
-
-			}
-		});
-	}
-    */
     
     private BroadcastReceiver onNotice= new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String str = intent.getStringExtra("msg");
+            String p_msg = intent.getStringExtra("msg");
             String str1 = intent.getStringExtra("fromname");
             String str2 = intent.getStringExtra("fromu");
             if(str2.equals(bundle.getString("mobno"))){
 
-            	/*
-                TableRow tr1 = new TableRow(getApplicationContext());
-                tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                TextView textview = new TextView(getApplicationContext());
-                textview.setTextSize(20);
-                textview.setTextColor(Color.parseColor("#0B0719"));
-                textview.setText(Html.fromHtml("<b>"+str1+" : </b>"+str));
-                tr1.addView(textview);
-                tab.addView(tr1);
-                *
-                *
-                */
-            	
-                insertData(str1, str);
-                Log.d("test", "2  name: " + str1 + " msg: " + str); 
+                insertData(str1, p_msg, INT_OTHER);
+                Log.d("test", "2  name: " + str1 + " msg: " + p_msg); 
                 
-                //green code
-                //append message to list
-    			/*
-                CustomMsg m = new CustomMsg(str1, str, false);
-    			appendMessage(m);
-    			 */
-    			ADAPTER.add(new OneComment(true, str));
+    			ADAPTER.add(new OneComment(FROMOTHER, p_msg));
 				
-    			
-    			
             }
         }
     };
