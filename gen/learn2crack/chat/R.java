@@ -382,6 +382,8 @@ containing a value of this type.
         public static final int zOrderOnTop=0x7f010014;
     }
     public static final class color {
+        public static final int bg_msg_from=0x7f080017;
+        public static final int bg_msg_you=0x7f080018;
         public static final int common_action_bar_splitter=0x7f080009;
         /**  Sign-in Button Colors 
          */
@@ -394,8 +396,10 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f080006;
         public static final int common_signin_btn_light_text_focused=0x7f080007;
         public static final int common_signin_btn_light_text_pressed=0x7f080005;
-        public static final int common_signin_btn_text_dark=0x7f080017;
-        public static final int common_signin_btn_text_light=0x7f080018;
+        public static final int common_signin_btn_text_dark=0x7f08001c;
+        public static final int common_signin_btn_text_light=0x7f08001d;
+        public static final int lblFromName=0x7f080019;
+        public static final int title_gray=0x7f08001b;
         public static final int wallet_bright_foreground_disabled_holo_light=0x7f08000f;
         /** 
          Wallet colors to support consistent Wallet fragment holo dark UI in client application
@@ -414,8 +418,9 @@ containing a value of this type.
         public static final int wallet_hint_foreground_holo_light=0x7f080011;
         public static final int wallet_holo_blue_light=0x7f080015;
         public static final int wallet_link_text_light=0x7f080016;
-        public static final int wallet_primary_text_holo_light=0x7f080019;
-        public static final int wallet_secondary_text_holo_dark=0x7f08001a;
+        public static final int wallet_primary_text_holo_light=0x7f08001e;
+        public static final int wallet_secondary_text_holo_dark=0x7f08001f;
+        public static final int white=0x7f08001a;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -429,42 +434,46 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f0a0001;
     }
     public static final class drawable {
-        public static final int common_full_open_on_phone=0x7f020000;
-        public static final int common_ic_googleplayservices=0x7f020001;
-        public static final int common_signin_btn_icon_dark=0x7f020002;
-        public static final int common_signin_btn_icon_disabled_dark=0x7f020003;
-        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020004;
-        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020005;
-        public static final int common_signin_btn_icon_disabled_light=0x7f020006;
-        public static final int common_signin_btn_icon_focus_dark=0x7f020007;
-        public static final int common_signin_btn_icon_focus_light=0x7f020008;
-        public static final int common_signin_btn_icon_light=0x7f020009;
-        public static final int common_signin_btn_icon_normal_dark=0x7f02000a;
-        public static final int common_signin_btn_icon_normal_light=0x7f02000b;
-        public static final int common_signin_btn_icon_pressed_dark=0x7f02000c;
-        public static final int common_signin_btn_icon_pressed_light=0x7f02000d;
-        public static final int common_signin_btn_text_dark=0x7f02000e;
-        public static final int common_signin_btn_text_disabled_dark=0x7f02000f;
-        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020010;
-        public static final int common_signin_btn_text_disabled_focus_light=0x7f020011;
-        public static final int common_signin_btn_text_disabled_light=0x7f020012;
-        public static final int common_signin_btn_text_focus_dark=0x7f020013;
-        public static final int common_signin_btn_text_focus_light=0x7f020014;
-        public static final int common_signin_btn_text_light=0x7f020015;
-        public static final int common_signin_btn_text_normal_dark=0x7f020016;
-        public static final int common_signin_btn_text_normal_light=0x7f020017;
-        public static final int common_signin_btn_text_pressed_dark=0x7f020018;
-        public static final int common_signin_btn_text_pressed_light=0x7f020019;
-        public static final int ic_launcher=0x7f02001a;
-        public static final int ic_plusone_medium_off_client=0x7f02001b;
-        public static final int ic_plusone_small_off_client=0x7f02001c;
-        public static final int ic_plusone_standard_off_client=0x7f02001d;
-        public static final int ic_plusone_tall_off_client=0x7f02001e;
-        public static final int powered_by_google_dark=0x7f02001f;
-        public static final int powered_by_google_light=0x7f020020;
+        public static final int bg_msg_from=0x7f020000;
+        public static final int bg_msg_you=0x7f020001;
+        public static final int bubble_green=0x7f020002;
+        public static final int bubble_yellow=0x7f020003;
+        public static final int common_full_open_on_phone=0x7f020004;
+        public static final int common_ic_googleplayservices=0x7f020005;
+        public static final int common_signin_btn_icon_dark=0x7f020006;
+        public static final int common_signin_btn_icon_disabled_dark=0x7f020007;
+        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020008;
+        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020009;
+        public static final int common_signin_btn_icon_disabled_light=0x7f02000a;
+        public static final int common_signin_btn_icon_focus_dark=0x7f02000b;
+        public static final int common_signin_btn_icon_focus_light=0x7f02000c;
+        public static final int common_signin_btn_icon_light=0x7f02000d;
+        public static final int common_signin_btn_icon_normal_dark=0x7f02000e;
+        public static final int common_signin_btn_icon_normal_light=0x7f02000f;
+        public static final int common_signin_btn_icon_pressed_dark=0x7f020010;
+        public static final int common_signin_btn_icon_pressed_light=0x7f020011;
+        public static final int common_signin_btn_text_dark=0x7f020012;
+        public static final int common_signin_btn_text_disabled_dark=0x7f020013;
+        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020014;
+        public static final int common_signin_btn_text_disabled_focus_light=0x7f020015;
+        public static final int common_signin_btn_text_disabled_light=0x7f020016;
+        public static final int common_signin_btn_text_focus_dark=0x7f020017;
+        public static final int common_signin_btn_text_focus_light=0x7f020018;
+        public static final int common_signin_btn_text_light=0x7f020019;
+        public static final int common_signin_btn_text_normal_dark=0x7f02001a;
+        public static final int common_signin_btn_text_normal_light=0x7f02001b;
+        public static final int common_signin_btn_text_pressed_dark=0x7f02001c;
+        public static final int common_signin_btn_text_pressed_light=0x7f02001d;
+        public static final int ic_launcher=0x7f02001e;
+        public static final int ic_plusone_medium_off_client=0x7f02001f;
+        public static final int ic_plusone_small_off_client=0x7f020020;
+        public static final int ic_plusone_standard_off_client=0x7f020021;
+        public static final int ic_plusone_tall_off_client=0x7f020022;
+        public static final int powered_by_google_dark=0x7f020023;
+        public static final int powered_by_google_light=0x7f020024;
     }
     public static final class id {
-        public static final int action_settings=0x7f070021;
+        public static final int action_settings=0x7f070025;
         public static final int adjust_height=0x7f070002;
         public static final int adjust_width=0x7f070001;
         public static final int book_now=0x7f070012;
@@ -473,31 +482,35 @@ containing a value of this type.
         public static final int buy_with_google=0x7f070010;
         public static final int chat_msg=0x7f070019;
         public static final int classic=0x7f070014;
+        public static final int comment=0x7f07001e;
         public static final int content_frame=0x7f07001a;
         public static final int donate_with_google=0x7f070013;
         public static final int grayscale=0x7f070015;
         public static final int holo_dark=0x7f070007;
         public static final int holo_light=0x7f070008;
         public static final int hybrid=0x7f070006;
-        public static final int listView=0x7f070020;
-        public static final int log_btn=0x7f07001d;
-        public static final int logout=0x7f07001f;
+        public static final int lblMsgFrom=0x7f07001b;
+        public static final int listView=0x7f070024;
+        public static final int list_view_messages=0x7f070017;
+        public static final int log_btn=0x7f070021;
+        public static final int logout=0x7f070023;
         public static final int match_parent=0x7f07000e;
-        public static final int mobno=0x7f07001c;
+        public static final int mobno=0x7f070020;
         public static final int monochrome=0x7f070016;
-        public static final int name=0x7f07001b;
+        public static final int name=0x7f07001f;
         public static final int none=0x7f070000;
         public static final int normal=0x7f070003;
         public static final int production=0x7f070009;
-        public static final int refresh=0x7f07001e;
+        public static final int refresh=0x7f070022;
         public static final int sandbox=0x7f07000a;
         public static final int satellite=0x7f070004;
         public static final int selectionDetails=0x7f07000d;
         public static final int sendbtn=0x7f070018;
         public static final int strict_sandbox=0x7f07000b;
-        public static final int tab=0x7f070017;
         public static final int terrain=0x7f070005;
+        public static final int txtMsg=0x7f07001c;
         public static final int wrap_content=0x7f07000f;
+        public static final int wrapper=0x7f07001d;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f090000;
@@ -505,9 +518,12 @@ containing a value of this type.
     public static final class layout {
         public static final int activity_chat=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int login_fragment=0x7f030002;
-        public static final int user_fragment=0x7f030003;
-        public static final int user_list_single=0x7f030004;
+        public static final int list_item_message_left=0x7f030002;
+        public static final int list_item_message_right=0x7f030003;
+        public static final int listitem_discuss=0x7f030004;
+        public static final int login_fragment=0x7f030005;
+        public static final int user_fragment=0x7f030006;
+        public static final int user_list_single=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
